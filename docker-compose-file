@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  # Frontend service
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - app-network
+    image: raseebriyazkhan/flipkart-frontend:latest
+
+  # Backend service
+  backend:
+    build:
+      context: ./backend
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/flipkart-clone
+      - RAZORPAY_KEY_ID=SG.rzp_test_wlXh6va09NwJBL
+      - RAZORPAY_KEY_SECRET=jfW63Gbhbs0r5uC8AjjVbRpW
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mongo
+    networks:
+      - app-network
+    image: raseebriyazkhan/flipkart-backend:latest
+
+  # MongoDB service
+  mongo:
+    image: raseebriyazkhan/mongo:latest
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mongo-data:
