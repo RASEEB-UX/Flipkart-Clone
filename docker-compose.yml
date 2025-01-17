@@ -8,23 +8,21 @@ services:
       - "3000:80"
     depends_on:
       - backend
-    networks:
-      - app-network
+    network_mode: "host" # Use host network
     image: raseebriyazkhan/flipkart-frontend:latest
 
   backend:
     build:
       context: ./backend
     environment:
-      - MONGO_URI=mongodb://mongo:27017/flipkart-clone
+      - MONGO_URI=mongodb://localhost:27017/flipkart-clone # localhost because of host network
       - RAZORPAY_KEY_ID=SG.rzp_test_wlXh6va09NwJBL
       - RAZORPAY_KEY_SECRET=jfW63Gbhbs0r5uC8AjjVbRpW
     ports:
       - "5000:5000"
     depends_on:
       - mongo
-    networks:
-      - app-network
+    network_mode: "host" # Use host network
     image: raseebriyazkhan/flipkart-backend:latest
 
   mongo:
@@ -34,16 +32,7 @@ services:
       - "27017:27017"
     volumes:
       - mongo-data:/data/db
-    networks:
-      - app-network
-
-networks:
-  app-network:
-    driver: bridge
-    name: app-network
-    dns:
-      - 8.8.8.8
-      - 1.1.1.1
+    network_mode: "host" # Use host network
 
 volumes:
   mongo-data:
