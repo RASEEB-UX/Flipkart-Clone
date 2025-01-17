@@ -1,7 +1,6 @@
 version: '3.8'
 
 services:
-  # Frontend service
   frontend:
     build:
       context: ./frontend
@@ -13,7 +12,6 @@ services:
       - app-network
     image: raseebriyazkhan/flipkart-frontend:latest
 
-  # Backend service
   backend:
     build:
       context: ./backend
@@ -29,7 +27,6 @@ services:
       - app-network
     image: raseebriyazkhan/flipkart-backend:latest
 
-  # MongoDB service
   mongo:
     image: raseebriyazkhan/mongo:latest
     container_name: mongo
@@ -43,6 +40,10 @@ services:
 networks:
   app-network:
     driver: bridge
+    name: app-network
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
 
 volumes:
   mongo-data:
